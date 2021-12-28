@@ -1,9 +1,4 @@
-const pool = require("../database");
-const jwt = require("jsonwebtoken");
-const { key } = require("../key");
-const bcrypt = require("../lib/bcrypt")
 const passport = require("passport")
-
 
 const loginUsers = async (req, res, next) => {
     try {
@@ -23,4 +18,13 @@ const loginUsers = async (req, res, next) => {
     }
 };
 
-module.exports = { loginUsers }
+const logoutUsers = (req, res) => {
+    try {
+        req.logOut();
+        res.status(200).send({ message: "Success Logout" });
+    } catch (error) {
+        res.status(404).send({ message: error });
+    }
+};
+
+module.exports = { loginUsers, logoutUsers }

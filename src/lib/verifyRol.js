@@ -6,14 +6,13 @@ const rol = async (req, res, next) => {
     const response = await pool.query("select * from users where id = $1", [
       id,
     ]);
-    console.log(response.rows)
     const { rol } = response.rows[0];
     if (rol === "admin") {
       next();
       return;
     } else {
       return res
-        .status(404)
+        .status(403)
         .send({ message: "you do not have the permissions to access" });
     }
   } catch (error) {
