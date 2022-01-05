@@ -14,10 +14,10 @@ const getPermissionsById = async (req, res) => {
   try {
     const { id } = req.params;
     const response = await pool.query(
-      "select * from permissions where id = $1",
+      "select * from permissions where id_user = $1",
       [id]
     );
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     res.status(404).json(error);
   }

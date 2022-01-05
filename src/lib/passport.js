@@ -20,15 +20,15 @@ passport.use('local.signin', new LocalStrategy({
         const user = response.rows[0];
         const validPassword = await bcrypt.matchPassword(password, user.password);
         if (validPassword) {
-            const { id, rol, name, mail, password } = user;
+            const { id, rol, name, mail } = user;
             const payload = {
                 check: true,
             };
             const token = jwt.sign({ id: id }, key, {
                 expiresIn: 60 * 60 * 24,
             });
-            const data = { id, rol, name, mail, password, token }
-            return done(null, data, {message:"Success"});
+            const data = { id, rol, name, mail, token }
+            return done(null, data, { message: "Success" });
         } else {
             return done(null, false, { message: "Password Incorret" })
         }

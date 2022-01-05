@@ -34,10 +34,11 @@ app.use(
     secret: "secretcode",
     resave: true,
     saveUninitialized: true,
+    /* cookie: {domain: 'localhost:3000'} */
   })
 );
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cors({ origin: "http://localhost:4000", credentials: true }));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(passport.initialize());
