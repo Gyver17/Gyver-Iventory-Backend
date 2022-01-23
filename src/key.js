@@ -1,10 +1,12 @@
+const { config } = require("dotenv");
+config();
+
 module.exports = {
   database: {
-    user: "postgres",
-    host: "localhost",
-    password: "cortezmata55",
-    database: "gyver_second_db",
-    port: "5432",
-  },
-  key: "clave",
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT,
+  }
 };

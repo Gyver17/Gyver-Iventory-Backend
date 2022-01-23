@@ -1,5 +1,6 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
+const { handleError } = require("../lib/handleError");
 
 const getProducts = async (req, res) => {
   try {
@@ -8,7 +9,7 @@ const getProducts = async (req, res) => {
     );
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -20,7 +21,7 @@ const getProductsById = async (req, res) => {
     ]);
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -43,7 +44,7 @@ const createProducts = async (req, res) => {
       price_sell,
     });
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -62,7 +63,7 @@ const updateProducts = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -76,18 +77,7 @@ const deleteProducts = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
-  }
-};
-
-const innerProducts = async (req, res) => {
-  try {
-    const response = await pool.query(
-      "select products.code, products.name, category.name as category, products.quantity, products.price_buy, products.price_sell from products inner join category on products.id_category=category.id"
-    );
-    res.status(200).json(response.rows);
-  } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -97,5 +87,4 @@ module.exports = {
   createProducts,
   updateProducts,
   deleteProducts,
-  innerProducts,
 };

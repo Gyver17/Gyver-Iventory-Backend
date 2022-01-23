@@ -2,16 +2,17 @@ const { Router } = require("express");
 const router = Router();
 const category = require("../controllers/category.controllers");
 const { verifyToken } = require("../lib/verifyToken");
-const permissions = require('../permissions/category')
+const permissions = require('../permissions/category');
+const { validateCreate } = require("../validators/category");
 
-router.get("/category", [verifyToken, permissions.category], category.getCategory);
+router.get("/", verifyToken, permissions.category, category.getCategory);
 
-router.get("/category/:id", [verifyToken, permissions.category], category.getCategoryById);
+router.get("/:id", verifyToken, permissions.category, category.getCategoryById);
 
-router.post("/category", [verifyToken, permissions.create], category.createCategory);
+router.post("/", verifyToken, permissions.create, validateCreate, category.createCategory);
 
-router.put("/category/:id", [verifyToken, permissions.update], category.updateCategory);
+router.put("/:id", verifyToken, permissions.update, validateCreate, category.updateCategory);
 
-router.delete("/category/:id", [verifyToken, permissions.Delete], category.deleteCategory);
+router.delete("/:id", verifyToken, permissions.Delete, category.deleteCategory);
 
 module.exports = router;

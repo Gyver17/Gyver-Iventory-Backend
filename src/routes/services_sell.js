@@ -3,21 +3,18 @@ const router = express.Router();
 
 const services_sell = require("../controllers/services_sell.controllers");
 const { verifyToken } = require("../lib/verifyToken");
+const permissions = require('../permissions/sell')
+const { validateCreate } = require("../validators/servicesSell")
 
-router.get("/services_sell", verifyToken, services_sell.getServicesSell);
+router.get("/", verifyToken, permissions.products, services_sell.getServicesSell);
 
 router.get(
-  "/services_sell/:id",
+  "/:id",
   verifyToken,
+  permissions.products,
   services_sell.getServicesSellById
 );
 
-router.post("/services_sell", verifyToken, services_sell.createServicesSell);
-
-router.get(
-  "/inner/services_sell/:id_invoice",
-  verifyToken,
-  services_sell.innerServicesSell
-);
+router.post("/", verifyToken, permissions.products, validateCreate, services_sell.createServicesSell);
 
 module.exports = router;

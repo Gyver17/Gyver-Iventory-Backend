@@ -1,5 +1,6 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
+const { handleError } = require("../lib/handleError");
 
 const getServices = async (req, res) => {
   try {
@@ -8,7 +9,7 @@ const getServices = async (req, res) => {
     );
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).json(error);
+    handleError(res, error)
   }
 };
 
@@ -20,7 +21,7 @@ const getServicesById = async (req, res) => {
     ]);
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -36,7 +37,7 @@ const createServices = async (req, res) => {
       .status(200)
       .send({ id, code, name, description, unit_symbol, price_unit });
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -54,7 +55,7 @@ const updateServices = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -68,7 +69,7 @@ const deleteServices = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 

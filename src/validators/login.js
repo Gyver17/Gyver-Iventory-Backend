@@ -1,7 +1,7 @@
 const { check } = require('express-validator')
 const { validateResult } = require('../lib/validateResult')
 
-const validateCreate = [ //TODO:name, age, email
+const validateCreate = [
     check('mail')
         .exists()
         .isEmail(),

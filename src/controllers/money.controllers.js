@@ -1,12 +1,13 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
+const { handleError } = require("../lib/handleError");
 
 const getMoney = async (req, res) => {
   try {
     const response = await pool.query("select * from money order by name");
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -16,7 +17,7 @@ const getMoneyById = async (req, res) => {
     const response = await pool.query("select * from money where id=$1", [id]);
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -30,7 +31,7 @@ const createMoney = async (req, res) => {
     );
     res.status(200).send({ id, name, symbol, value });
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -48,7 +49,7 @@ const updateMoney = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -62,7 +63,7 @@ const deleteMoney = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 

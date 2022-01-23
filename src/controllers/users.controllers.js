@@ -1,13 +1,14 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
 const bcrypt = require("../lib/bcrypt")
+const { handleError } = require("../lib/handleError")
 
 const getUsers = async (req, res) => {
   try {
     const response = await pool.query("select * from users order by name asc");
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -19,7 +20,7 @@ const getUsersById = async (req, res) => {
     ]);
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -35,7 +36,7 @@ const createUsers = async (req, res) => {
     );
     res.status(200).send({ id, rol, name, mail, newPassword });
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -53,7 +54,7 @@ const updateUsers = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -67,20 +68,7 @@ const deleteUsers = async (req, res) => {
       res.status(200).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
-  }
-};
-
-const InnerUsers = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const response = await pool.query(
-      "select * from users inner join permissions on users.id=permissions.id_user where users.id=$1",
-      [id]
-    );
-    res.status(200).send(response.rows);
-  } catch (error) {
-    res.status(404).send(404);
+    handleError(res, error)
   }
 };
 
@@ -90,5 +78,4 @@ module.exports = {
   createUsers,
   updateUsers,
   deleteUsers,
-  InnerUsers,
 };

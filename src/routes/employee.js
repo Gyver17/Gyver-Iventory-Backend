@@ -3,16 +3,17 @@ const router = express.Router();
 
 const employee = require("../controllers/employee.controllers");
 const { verifyToken } = require("../lib/verifyToken");
-const permissions = require('../permissions/employee')
+const permissions = require('../permissions/employee');
+const { validateCreate } = require("../validators/employee");
 
-router.get("/employee", [verifyToken, permissions.employee], employee.getEmploye);
+router.get("/", verifyToken, permissions.employee, employee.getEmploye);
 
-router.get("/employee/:id", [verifyToken, permissions.employee], employee.getEmployeById);
+router.get("/:id", verifyToken, permissions.employee, employee.getEmployeById);
 
-router.post("/employee", [verifyToken, permissions.create], employee.createEmploye);
+router.post("/", verifyToken, permissions.create, validateCreate, employee.createEmploye);
 
-router.put("/employee/:id", [verifyToken, permissions.update], employee.updateEmploye);
+router.put("/:id", verifyToken, permissions.update, validateCreate, employee.updateEmploye);
 
-router.delete("/employee/:id", [verifyToken, permissions.Delete], employee.deleteEmploye);
+router.delete("//:id", verifyToken, permissions.Delete, employee.deleteEmploye);
 
 module.exports = router;

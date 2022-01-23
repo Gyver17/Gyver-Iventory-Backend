@@ -1,36 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const verify = require("../lib/verifyToken");
+
+const { verifyToken } = require("../lib/verifyToken");
 const permissions = require("../lib/verifyRol");
-
 const users = require("../controllers/users.controllers");
+const { validateCreate } = require("../validators/users")
 
-router.get("/users", [verify.verifyToken, permissions.rol], users.getUsers);
+router.get("/", verifyToken, permissions.rol, users.getUsers);
 
-router.get(
-  "/users/:id",
-  [verify.verifyToken, permissions.rol],
-  users.getUsersById
+router.get("/:id", verifyToken, permissions.rol, users.getUsersById
 );
 
-router.post("/users", [verify.verifyToken, permissions.rol], users.createUsers);
+router.post("/", verifyToken, permissions.rol, validateCreate, users.createUsers);
 
-router.put(
-  "/users/:id",
-  [verify.verifyToken, permissions.rol],
-  users.updateUsers
+router.put("/:id", verifyToken, permissions.rol, validateCreate, users.updateUsers
 );
 
-router.delete(
-  "/users/:id",
-  [verify.verifyToken, permissions.rol],
-  users.deleteUsers
-);
-
-router.get(
-  "/users/permissions/:id",
-  [verify.verifyToken, permissions.rol],
-  users.InnerUsers
+router.delete("/:id", verifyToken, permissions.rol, users.deleteUsers
 );
 
 module.exports = router;

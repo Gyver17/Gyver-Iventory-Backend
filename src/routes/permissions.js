@@ -3,15 +3,17 @@ const router = express.Router();
 
 const permissions = require("../controllers/permissions.controllers");
 const { verifyToken } = require("../lib/verifyToken");
+const { rol } = require("../lib/verifyRol")
+const { validateCreate } = require("../validators/permissions")
 
-router.get("/permissions", verifyToken, permissions.getPermissions);
+router.get("/", verifyToken, rol, permissions.getPermissions);
 
-router.get("/permissions/:id", verifyToken, permissions.getPermissionsById);
+router.get("/:id", verifyToken, rol, permissions.getPermissionsById);
 
-router.post("/permissions", verifyToken, permissions.createPermissions);
+router.post("/", verifyToken, rol, validateCreate,  permissions.createPermissions);
 
-router.put("/permissions/:id", verifyToken, permissions.updatePermissions);
+router.put("/:id", verifyToken, rol, validateCreate, permissions.updatePermissions);
 
-router.delete("/permissions/:id", verifyToken, permissions.deletePermissions);
+router.delete("/:id", verifyToken, rol, permissions.deletePermissions);
 
 module.exports = router;

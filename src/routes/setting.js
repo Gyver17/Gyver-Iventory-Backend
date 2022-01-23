@@ -4,15 +4,16 @@ const router = express.Router();
 const setting = require("../controllers/setting.controllers");
 const { verifyToken } = require("../lib/verifyToken");
 const permissions = require('../permissions/setting')
+const { validateCreate } = require("../validators/setting")
 
-router.get("/setting", [verifyToken, permissions.setting], setting.getSetting);
+router.get("/", verifyToken, permissions.setting, setting.getSetting);
 
-router.get("/setting/:id", [verifyToken, permissions.setting], setting.getSettingById);
+router.get("/:id", verifyToken, permissions.setting, setting.getSettingById);
 
-router.post("/setting", [verifyToken, permissions.setting], setting.createSetting);
+router.post("/", verifyToken, permissions.setting, validateCreate, setting.createSetting);
 
-router.put("/setting/:id", [verifyToken, permissions.setting], setting.updateSetting);
+router.put("/:id", verifyToken, permissions.setting, validateCreate, setting.updateSetting);
 
-router.delete("/setting/:id", [verifyToken, permissions.setting], setting.deleteSetting);
+router.delete("/:id", verifyToken, permissions.setting, setting.deleteSetting);
 
 module.exports = router;

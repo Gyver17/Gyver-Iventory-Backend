@@ -1,5 +1,6 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
+const { handleError } = require("../lib/handleError");
 
 const getCategory = async (req, res) => {
   try {
@@ -8,7 +9,7 @@ const getCategory = async (req, res) => {
     );
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -20,7 +21,7 @@ const getCategoryById = async (req, res) => {
     ]);
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -34,7 +35,7 @@ const createCategory = async (req, res) => {
     );
     res.status(200).send({ id, name, unit });
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -52,7 +53,7 @@ const updateCategory = async (req, res) => {
       res.status(404).send("Id not found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    rhandleError(res, error)
   }
 };
 
@@ -63,7 +64,7 @@ const deleteCategory = async (req, res) => {
     if (response.rowCount > 0) {
       res.status(200).send("Category Deleted SuccessFully");
     } else {
-      res.status(404).send("Id Not Found");
+      handleError(res, error)
     }
   } catch (error) {}
 };

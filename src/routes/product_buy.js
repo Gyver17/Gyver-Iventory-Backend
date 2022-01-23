@@ -4,17 +4,12 @@ const router = express.Router();
 const product_buy = require("../controllers/product_buy.controllers");
 const { verifyToken } = require("../lib/verifyToken");
 const permissions = require('../permissions/buy')
+const { validateCreate } = require('../validators/productBuy')
 
-router.get("/product_buy", [verifyToken, permissions.products], product_buy.getProductBuy);
+router.get("/", verifyToken, permissions.products, product_buy.getProductBuy);
 
-router.get("/product_buy/:id", [verifyToken, permissions.products], product_buy.getProductBuyById);
+router.get("/:id", verifyToken, permissions.products, product_buy.getProductBuyById);
 
-router.post("/product_buy", [verifyToken, permissions.products], product_buy.createProductBuy);
-
-router.get(
-  "/inner/product_buy/:id_invoice",
-  verifyToken,
-  product_buy.innerProductBuy
-);
+router.post("/", verifyToken, permissions.products, validateCreate, product_buy.createProductBuy);
 
 module.exports = router;

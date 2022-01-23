@@ -1,12 +1,13 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
+const { handleError } = require("../lib/handleError");
 
 const getPermissions = async (req, res) => {
   try {
     const response = await pool.query("select * from permissions");
     res.status(200).json(response.rows);
   } catch (error) {
-    res.status(404).json(error);
+    handleError(res, error)
   }
 };
 
@@ -19,7 +20,7 @@ const getPermissionsById = async (req, res) => {
     );
     res.status(200).json(response.rows[0]);
   } catch (error) {
-    res.status(404).json(error);
+    handleError(res, error)
   }
 };
 
@@ -113,7 +114,7 @@ const createPermissions = async (req, res) => {
         p.setting,
       ]);
   } catch (error) {
-    res.status(404).json(error);
+    handleError(res, error)
   }
 };
 
@@ -170,7 +171,7 @@ const updatePermissions = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error);
+    handleError(res, error)
   }
 };
 
@@ -186,7 +187,7 @@ const deletePermissions = async (req, res) => {
       res.status(404).send("Id Not Found");
     }
   } catch (error) {
-    res.status(404).send(error)
+    handleError(res, error)
   }
 };
 
