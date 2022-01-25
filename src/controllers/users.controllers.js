@@ -27,13 +27,14 @@ const getUsersById = async (req, res) => {
 const createUsers = async (req, res) => {
   try {
     const id = v4();
+    const idSession = v4()
     const { rol, name, mail, password } = req.body;
     newPassword = await bcrypt.encryptPassword(password);
-    console.log(newPassword)
     await pool.query(
       "insert into users (id, rol, name, mail, password) values ($1, $2, $3, $4, $5)",
       [id, rol, name, mail, newPassword]
     );
+    await pool.query("insert into sessions (id, id_user) values ($1, $2)", [idSession, id])
     res.status(200).send({ id, rol, name, mail, newPassword });
   } catch (error) {
     handleError(res, error)
@@ -65,7 +66,7 @@ const deleteUsers = async (req, res) => {
     if (response.rowCount > 0) {
       res.status(200).send("Delete Users Sucess");
     } else {
-      res.status(200).send("Id Not Found");
+      res.status(404).send("Id Not Found");
     }
   } catch (error) {
     handleError(res, error)

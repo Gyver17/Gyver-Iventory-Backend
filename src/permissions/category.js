@@ -1,3 +1,4 @@
+const { handleError } = require('../lib/handleError')
 const { query } = require('./query')
 
 const category = async (req, res, next) => {
@@ -6,10 +7,10 @@ const category = async (req, res, next) => {
         if (data.category) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -19,10 +20,10 @@ const create = async (req, res, next) => {
         if (data.category_create) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -32,10 +33,10 @@ const update = async (req, res, next) => {
         if (data.category_update) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -45,10 +46,10 @@ const Delete = async (req, res, next) => {
         if (data.category_delete) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 

@@ -1,4 +1,5 @@
 const pool = require("../database");
+const { handleError } = require("./handleError");
 
 const rol = async (req, res, next) => {
   try {
@@ -13,10 +14,10 @@ const rol = async (req, res, next) => {
     } else {
       return res
         .status(403)
-        .send({ message: "you do not have the permissions to access" });
+        .send({ code: "43178" });
     }
   } catch (error) {
-    return res.status(404).send({ message: error });
+    handleError(res, error)
   }
 };
 

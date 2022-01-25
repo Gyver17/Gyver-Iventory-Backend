@@ -1,15 +1,14 @@
 const handleError = (res, err) => {
-    //console.log(err)
     if (err.code) {
         if (err.code === "23505" || err.code === "23503") {
-            res.status(500).json({ code: err.code, detail: err.detail, constraint: err.constraint })
+            res.status(500).json({ code: err.code, detail: err.constraint })
         }
         else {
-            res.status(500).json({ code: err.code, detail: err.detail })
+            res.status(500).json({ code: err.code })
         }
     } else {
         res.status(500)
-        res.send({ error: 'Something is Wrong' })
+        res.send({ code: "50115" })
     }
 }
 

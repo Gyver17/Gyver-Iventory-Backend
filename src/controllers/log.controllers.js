@@ -27,16 +27,27 @@ const loginUsers = async (req, res) => {
                     issuer: "http://localhost:3000"
                 });
                 const data = { id, rol, name, mail, token }
-                res.status(200).send({ data, message: "Succes" })
+                res.status(200).send({ data })
             } else {
-                rres.status(200).send(false, { message: "Password Incorret" })
+                res.status(404).send({ message: "Password Incorret" })
             }
         } else {
-            res.status(200).send(false, { message: "Not User Found" })
+            res.status(404).send({ message: "Not User Found" })
         }
     } catch (error) {
         handleError(res, error)
     }
 };
 
-module.exports = { loginUsers }
+const logoutUsers = async (req, res) => {
+    try {
+        id = req.userId
+        const secretKey = undefined
+        await pool.query("update sessions set secret_key=$1 where id_user=$2", [secretKey, id])
+        res.status(200).send({ message: "Successful" })
+    } catch (error) {
+        handleError(res, error)
+    }
+}
+
+module.exports = { loginUsers, logoutUsers }

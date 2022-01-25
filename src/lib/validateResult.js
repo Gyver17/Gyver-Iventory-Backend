@@ -6,7 +6,10 @@ const validateResult = (req, res, next) => {
         return next()
     } catch (err) {
         res.status(403)
-        res.send({ errors: err.array() })
+        res.send({
+            code: "43097",
+            details: err.array({ onlyFirstError: true })
+        })
     }
 }
 

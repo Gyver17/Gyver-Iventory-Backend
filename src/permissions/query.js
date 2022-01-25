@@ -1,4 +1,5 @@
-const pool = require('../database')
+const pool = require('../database');
+const { handleError } = require('../lib/handleError');
 
 const query = async (req, res) => {
     try {
@@ -9,7 +10,7 @@ const query = async (req, res) => {
         );
         return response.rows[0];
     } catch (error) {
-        res.status(404).send({ message: "Verify Failed" });
+        handleError(res, error)
     }
 };
 

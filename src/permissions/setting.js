@@ -1,3 +1,4 @@
+const { handleError } = require('../lib/handleError')
 const { query } = require('./query')
 
 const setting = async (req, res, next) => {
@@ -6,10 +7,10 @@ const setting = async (req, res, next) => {
         if (data.setting) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 

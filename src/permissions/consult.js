@@ -1,3 +1,4 @@
+const { handleError } = require('../lib/handleError')
 const { query } = require('./query')
 
 const product = async (req, res, next) => {
@@ -6,10 +7,10 @@ const product = async (req, res, next) => {
         if (data.consult_product) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -19,10 +20,10 @@ const invoice = async (req, res, next) => {
         if (data.consult_invoice) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -32,10 +33,10 @@ const movement = async (req, res, next) => {
         if (data.consult_movement) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -45,10 +46,10 @@ const supplier = async (req, res, next) => {
         if (data.consult_supplier) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
@@ -58,10 +59,10 @@ const client = async (req, res, next) => {
         if (data.consult_client) {
             next()
         } else {
-            return res.status(404).send({ message: "you do not have the permissions to access" })
+            return res.status(403).send({ code: "43114" })
         }
     } catch (error) {
-        return res.status(404).send(error)
+        handleError(res, error)
     }
 }
 
