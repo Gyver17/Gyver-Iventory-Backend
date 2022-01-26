@@ -18,7 +18,7 @@ const getProductSellById = async (req, res) => {
       "select * from product_sell where id=$1",
       [id]
     );
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -33,9 +33,7 @@ const createProductSell = async (req, res) => {
       "insert into product_sell (id, id_product, quantity, price_total, id_invoice, description) values ($1, $2, $3, $4, $5, $6)",
       [id, id_product, quantity, price_total, id_invoice, description]
     );
-    res
-      .status(200)
-      .send({ id, id_product, quantity, price_total, id_invoice, description });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }

@@ -19,7 +19,7 @@ const getCategoryById = async (req, res) => {
     const response = await pool.query("select * from category where id=$1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -33,7 +33,7 @@ const createCategory = async (req, res) => {
       "insert into category (id, name, unit) values ($1, $2, $3)",
       [id, name, unit]
     );
-    res.status(200).send({ id, name, unit });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -48,9 +48,9 @@ const updateCategory = async (req, res) => {
       [name, unit, id]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Category Updated Successfully");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id not found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     rhandleError(res, error)
@@ -62,11 +62,13 @@ const deleteCategory = async (req, res) => {
     const { id } = req.params;
     const response = await pool.query("delete from category where id=$1", [id]);
     if (response.rowCount > 0) {
-      res.status(200).send("Category Deleted SuccessFully");
+      res.status(200).send({ message: "Successful" });
     } else {
-      handleError(res, error)
+      res.status(404).send({ code: "44947" })
     }
-  } catch (error) {}
+  } catch (error) {
+    handleError(res, error)
+  }
 };
 
 module.exports = {

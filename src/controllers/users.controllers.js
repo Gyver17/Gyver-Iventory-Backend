@@ -5,7 +5,7 @@ const { handleError } = require("../lib/handleError")
 
 const getUsers = async (req, res) => {
   try {
-    const response = await pool.query("select * from users order by name asc");
+    const response = await pool.query("select id, rol, name, mail from users order by name asc");
     res.status(200).json(response.rows);
   } catch (error) {
     handleError(res, error)
@@ -15,10 +15,10 @@ const getUsers = async (req, res) => {
 const getUsersById = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await pool.query("select * from users where id = $1", [
+    const response = await pool.query("select id, rol, name, mail from users where id = $1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -35,7 +35,7 @@ const createUsers = async (req, res) => {
       [id, rol, name, mail, newPassword]
     );
     await pool.query("insert into sessions (id, id_user) values ($1, $2)", [idSession, id])
-    res.status(200).send({ id, rol, name, mail, newPassword });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -50,9 +50,9 @@ const updateUsers = async (req, res) => {
       [rol, name, mail, password, id]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("User Updating Success");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)
@@ -64,9 +64,9 @@ const deleteUsers = async (req, res) => {
     const { id } = req.params;
     const response = await pool.query("delete from users where id=$1", [id]);
     if (response.rowCount > 0) {
-      res.status(200).send("Delete Users Sucess");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)

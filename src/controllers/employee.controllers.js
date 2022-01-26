@@ -1,5 +1,6 @@
 const pool = require("../database");
 const { v4 } = require("uuid");
+const { handleError } = require("../lib/handleError")
 
 const getEmploye = async (req, res) => {
   try {
@@ -18,7 +19,7 @@ const getEmployeById = async (req, res) => {
     const response = await pool.query("select * from employee where id=$1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -51,17 +52,7 @@ const createEmploye = async (req, res) => {
         com_service,
       ]
     );
-    res.status(200).send({
-      id,
-      code,
-      name,
-      doc_id,
-      mail,
-      phone,
-      salary,
-      com_sell,
-      com_service,
-    });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -75,7 +66,6 @@ const updateEmploye = async (req, res) => {
       name,
       doc_id,
       mail,
-      prefix_phone,
       salary,
       com_sell,
       com_service,
@@ -95,9 +85,9 @@ const updateEmploye = async (req, res) => {
       ]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Employee Update Sucess");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)
@@ -109,9 +99,9 @@ const deleteEmploye = async (req, res) => {
     const { id } = req.params;
     const response = await pool.query("delete from employee where id=$1", [id]);
     if (response.rowCount > 0) {
-      res.status(200).send("Delete Employee Success");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)

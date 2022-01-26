@@ -71,48 +71,7 @@ const createPermissions = async (req, res) => {
         p.setting,
       ]
     );
-    res
-      .status(200)
-      .send([
-        id,
-        p.id_user,
-        p.products,
-        p.products_create,
-        p.products_update,
-        p.products_delete,
-        p.category,
-        p.category_create,
-        p.category_update,
-        p.category_delete,
-        p.services,
-        p.services_create,
-        p.services_update,
-        p.services_delete,
-        p.client,
-        p.client_create,
-        p.client_update,
-        p.client_delete,
-        p.supplier,
-        p.supplier_create,
-        p.supplier_update,
-        p.supplier_delete,
-        p.employee,
-        p.employee_create,
-        p.employee_update,
-        p.employee_delete,
-        p.buy,
-        p.buy_return,
-        p.buy_pay,
-        p.sell,
-        p.sell_return,
-        p.sell_pay,
-        p.consult_product,
-        p.consult_invoice,
-        p.consult_movement,
-        p.consult_supplier,
-        p.consult_client,
-        p.setting,
-      ]);
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -166,9 +125,9 @@ const updatePermissions = async (req, res) => {
       ]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Permission Updating Success");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)
@@ -182,9 +141,9 @@ const deletePermissions = async (req, res) => {
       id,
     ]);
     if (response.rowCount > 0) {
-      res.status(200).send("Delete Permission Sucess");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)

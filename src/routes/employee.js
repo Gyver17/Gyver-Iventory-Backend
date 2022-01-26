@@ -14,6 +14,6 @@ router.post("/", verifyToken, permissions.create, validateCreate, employee.creat
 
 router.put("/:id", verifyToken, permissions.update, validateCreate, employee.updateEmploye);
 
-router.delete("//:id", verifyToken, permissions.Delete, employee.deleteEmploye);
+router.delete("/:id", verifyToken, permissions.Delete, employee.deleteEmploye);
 
 module.exports = router;

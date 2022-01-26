@@ -17,7 +17,7 @@ const getProductBuyById = async (req, res) => {
     const response = await pool.query("select * from product_buy where id=$1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -32,9 +32,7 @@ const createProductBuy = async (req, res) => {
       "insert into product_buy (id, id_product, quantity, price_total, id_invoice, description) values ($1, $2, $3, $4, $5, $6)",
       [id, id_product, quantity, price_total, id_invoice, description]
     );
-    res
-      .status(200)
-      .send({ id, id_product, quantity, price_total, id_invoice, description });
+    res.status(200).send({ message: "Successful"});
   } catch (error) {
     handleError(res, error)
   }

@@ -1,65 +1,76 @@
+const { category } = require("../tableConstraint/category")
+const { client } = require("../tableConstraint/client")
+const { employee } = require("../tableConstraint/employee")
+const { invoiceBuy } = require("../tableConstraint/invoiceBuy")
+const { invoiceSell } = require("../tableConstraint/invoiceSell")
+const { money } = require("../tableConstraint/money")
+const { payPurchasesHistory } = require("../tableConstraint/payPurchasesHistory")
+const { paySalesHistory } = require("../tableConstraint/paySalesHistory")
+const { permissions } = require("../tableConstraint/permissions")
+const { productBuy } = require("../tableConstraint/productBuy")
+const { products } = require("../tableConstraint/products")
+const { productSell } = require("../tableConstraint/productSell")
+const { services } = require("../tableConstraint/services")
+const { servicesSell } = require("../tableConstraint/servicesSell")
+const { setting } = require("../tableConstraint/setting")
+const { supplier } = require("../tableConstraint/supplier")
+const { users } = require("../tableConstraint/users")
+
 const handleConstraint = (res, error) => {
     try {
-        if(error.table==="category"){
-            console.log(error)
+        if (error.table === "category") {
+            category(res, error)
         }
-        if(error.table==="client"){
-            console.log(error)
+        if (error.table === "client") {
+            client(res, error)
         }
-        if(error.table==="employee"){
-            console.log(error)
+        if (error.table === "employee") {
+            employee(res, error)
         }
-        if(error.table==="invoice_buy"){
-            console.log(error)
+        if (error.table === "invoice_buy") {
+            invoiceBuy(res, error)
         }
-        if(error.table==="invoice_sell"){
-            console.log(error)
+        if (error.table === "invoice_sell") {
+            invoiceSell(res, error)
         }
-        if(error.table==="money"){
-            console.log(error)
+        if (error.table === "money") {
+            money(res, error)
         }
-        if(error.table==="numbers_invoice"){
-            console.log(error)
+        if (error.table === "pay_purchases_history") {
+            payPurchasesHistory(res, error)
         }
-        if(error.table==="pay_purchases_history"){
-            console.log(error)
+        if (error.table === "pay_sales_history") {
+            paySalesHistory(res, error)
         }
-        if(error.table==="pay_sales_history"){
-            console.log(error)
+        if (error.table === "permissions") {
+            permissions(res, error)
         }
-        if(error.table==="permissions"){
-            console.log(error)
+        if (error.table === "product_buy") {
+            productBuy(res, error)
         }
-        if(error.table==="product_buy"){
-            console.log(error)
+        if (error.table === "product_sell") {
+            productSell(res, error)
         }
-        if(error.table==="product_sell"){
-            console.log(error)
+        if (error.table === "products") {
+            products(res, error)
         }
-        if(error.table==="products"){
-            console.log(error)
+        if (error.table === "services") {
+            services(res, error)
         }
-        if(error.table==="services"){
-            console.log(error)
+        if (error.table === "services_sell") {
+            servicesSell(res, error)
         }
-        if(error.table==="services_sell"){
-            console.log(error)
+        if (error.table === "setting") {
+            setting(res, error)
         }
-        if(error.table==="sessions"){
-            console.log(error)
+        if (error.table === "supplier") {
+            supplier(res, error)
         }
-        if(error.table==="setting"){
-            console.log(error)
-        }
-        if(error.table==="supplier"){
-            console.log(error)
-        }
-        if(error.table==="users"){
-            console.log(error)
+        if (error.table === "users") {
+            users(res, error)
         }
     } catch (err) {
-        res.status(500)
-        res.send({ code: "50115" , err})
+        res.status(500).send({ code: "50115" })
     }
 }
 

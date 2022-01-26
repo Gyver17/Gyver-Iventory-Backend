@@ -1,10 +1,12 @@
+const { handleConstraint } = require("./handleConstraint")
+
 const handleError = (res, err) => {
     if (err.code) {
         if (err.code === "23505" || err.code === "23503") {
-            res.status(500).json({ code: err.code, detail: err.constraint })
+            handleConstraint(res, err)
         }
         else {
-            res.status(500).json({ code: err.code })
+            res.status(500).json({ code: "50115" })
         }
     } else {
         res.status(500)

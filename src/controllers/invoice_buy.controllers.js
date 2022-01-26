@@ -19,7 +19,7 @@ const getInvoiceBuyById = async (req, res) => {
     const response = await pool.query("select * from invoice_buy where id=$1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -68,25 +68,7 @@ const createInvoiceBuy = async (req, res) => {
         observation,
       ]
     );
-    res.status(200).send({
-      id,
-      number,
-      id_supplier,
-      id_employee,
-      price_sub,
-      price_porcent,
-      price_iva,
-      price_total,
-      date,
-      description,
-      pay_type,
-      pay_debit,
-      pay_cash,
-      credit,
-      amount_pay,
-      amount_remaining,
-      observation,
-    });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -101,9 +83,9 @@ const updateInvoiceBuy = async (req, res) => {
       [description, credit, amount_pay, amount_remaining, id]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Update Success");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)

@@ -19,7 +19,7 @@ const getProductsById = async (req, res) => {
     const response = await pool.query("select * from products where id=$1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -34,15 +34,7 @@ const createProducts = async (req, res) => {
       "insert into products (id, code, name, id_category, quantity, price_buy, price_sell) values ($1, $2, $3, $4, $5, $6, $7)",
       [id, code, name, id_category, quantity, price_buy, price_sell]
     );
-    res.status(200).send({
-      id,
-      code,
-      name,
-      id_category,
-      quantity,
-      price_buy,
-      price_sell,
-    });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -58,9 +50,9 @@ const updateProducts = async (req, res) => {
       [code, name, id_category, quantity, price_buy, price_sell, id]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Products Updating Sucess");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)
@@ -72,9 +64,9 @@ const deleteProducts = async (req, res) => {
     const { id } = req.params;
     const response = await pool.query("delete from products where id=$1", [id]);
     if (response.rowCount > 0) {
-      res.status(200).send("Product Deleted SuccessFully");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)

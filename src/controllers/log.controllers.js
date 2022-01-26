@@ -22,17 +22,15 @@ const loginUsers = async (req, res) => {
                     id: id
                 };
                 const token = jwt.sign(payload, secretKey, {
-                    expiresIn: 60 * 60 * 24,
-                    audience: "http://192.168.1.24:4000/",
-                    issuer: "http://localhost:3000"
+                    expiresIn: 60 * 60 * 24
                 });
                 const data = { id, rol, name, mail, token }
-                res.status(200).send({ data })
+                res.status(200).send(data)
             } else {
-                res.status(404).send({ message: "Password Incorret" })
+                res.status(404).send({ code: "44754" })
             }
         } else {
-            res.status(404).send({ message: "Not User Found" })
+            res.status(404).send({ code: "44754" })
         }
     } catch (error) {
         handleError(res, error)

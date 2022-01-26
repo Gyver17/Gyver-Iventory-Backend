@@ -19,7 +19,7 @@ const getServicesById = async (req, res) => {
     const response = await pool.query("select * from services where id=$1", [
       id,
     ]);
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -33,9 +33,7 @@ const createServices = async (req, res) => {
       "insert into services (id, code, name, description, unit_symbol, price_unit) values ($1, $2, $3, $4, $5, $6)",
       [id, code, name, description, unit_symbol, price_unit]
     );
-    res
-      .status(200)
-      .send({ id, code, name, description, unit_symbol, price_unit });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -50,9 +48,9 @@ const updateServices = async (req, res) => {
       [code, name, description, unit_symbol, price_unit, id]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Servies Updated SuccessFully");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)
@@ -64,9 +62,9 @@ const deleteServices = async (req, res) => {
     const { id } = req.params;
     const response = await pool.query("delete from services where id=$1", [id]);
     if (response.rowCount > 0) {
-      res.status(200).send("Delete Services Success");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)

@@ -18,7 +18,7 @@ const getServicesSellById = async (req, res) => {
       "select * from services_sell where id=$1",
       [id]
     );
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -47,15 +47,7 @@ const createServicesSell = async (req, res) => {
         id_employee,
       ]
     );
-    res.status(200).send({
-      id,
-      id_services,
-      quantity,
-      price_total,
-      id_invoice,
-      description,
-      id_employee,
-    });
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }

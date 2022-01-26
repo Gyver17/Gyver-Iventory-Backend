@@ -11,10 +11,6 @@ const getSetting = async (req, res) => {
   }
 };
 
-const getSettingById = (req, res) => {
-  res.send("getSettingById");
-};
-
 const createSetting = async (req, res) => {
   try {
     const id = v4();
@@ -48,7 +44,7 @@ const createSetting = async (req, res) => {
         iva,
       ]
     );
-    res.send("createSetting");
+    res.status(200).send({ message: "Successful" });
   } catch (error) {
     handleError(res, error)
   }
@@ -88,23 +84,17 @@ const updateSetting = async (req, res) => {
       ]
     );
     if (response.rowCount > 0) {
-      res.status(200).send("Update Success");
+      res.status(200).send({ message: "Successful" });
     } else {
-      res.status(404).send("Id Not Found");
+      res.status(404).send({ code: "44947" });
     }
   } catch (error) {
     handleError(res, error)
   }
 };
 
-const deleteSetting = (req, res) => {
-  res.send("deleteSetting");
-};
-
 module.exports = {
   getSetting,
-  getSettingById,
   createSetting,
-  updateSetting,
-  deleteSetting,
+  updateSetting
 };

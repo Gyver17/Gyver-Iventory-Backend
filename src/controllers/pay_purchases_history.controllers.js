@@ -15,7 +15,7 @@ const getPayPurchasesHistoryById = async (req, res) => {
     try {
         const { id } = req.params
         const response = await pool.query("select * from pay_purchases_history where id=$1", [id])
-        res.status(200).json(response.rows)
+        res.status(200).json(response.rows[0])
     } catch (err) {
         handleError(res, error)
     }
@@ -28,7 +28,7 @@ const createPayPurchasesHistory = async (req, res) => {
         await pool.query(
             "insert into pay_purchases_history (id, id_invoice, date, amount) values ($1, $2, $3, $4)",
             [id, id_invoice, date, amount])
-        res.status(200).json({ id, id_invoice, date, amount })
+        res.status(200).send({ message: "Successful" })
     } catch (err) {
         handleError(res, error)
     }
