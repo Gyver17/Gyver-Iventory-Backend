@@ -2,7 +2,7 @@ const { check } = require('express-validator')
 const { validateResult } = require('../lib/validateResult')
 const { expresions } = require('../ExpReg')
 
-const validateCreate = [
+const validateCreateUsersUpdate = [
     check('rol')
         .exists()
         .isString()
@@ -26,16 +26,6 @@ const validateCreate = [
     check('mail')
         .exists()
         .isEmail()
-        .notEmpty(),
-    check('password')
-        .exists()
-        .isString()
-        .custom((value) => {
-            if (!expresions.password.test(value)) {
-                throw new Error("Invalid Value")
-            }
-            return true
-        })
         .notEmpty()
     ,
     (req, res, next) => {
@@ -43,4 +33,4 @@ const validateCreate = [
     }
 ]
 
-module.exports = { validateCreate }
+module.exports = { validateCreateUsersUpdate }
