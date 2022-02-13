@@ -6,6 +6,7 @@ const app = express();
 //Consts
 const settingCors = {
   origin: "http://localhost:4000",
+  // origin: "http://192.168.1.24:4000",
   credentials: true
 }
 

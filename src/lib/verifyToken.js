@@ -7,7 +7,7 @@ const verifyToken = async (req, res, next) => {
     const token = req.headers["x-access-token"];
 
     if (!token) {
-      res.status(404).send({ code: "43292" });
+      res.status(403).send({ code: "43292" });
     } else {
 
       /* Decoding the token to get the payload */

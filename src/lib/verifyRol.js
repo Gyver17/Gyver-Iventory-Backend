@@ -1,7 +1,7 @@
 const pool = require("../database");
 const { handleError } = require("./handleError");
 
-const rol = async (req, res, next) => {
+const verifyRol = async (req, res, next) => {
   try {
     const id = req.userId;
     const response = await pool.query("select * from users where id = $1", [
@@ -21,4 +21,4 @@ const rol = async (req, res, next) => {
   }
 };
 
-module.exports = { rol };
+module.exports = { verifyRol };

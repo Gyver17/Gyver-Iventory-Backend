@@ -82,7 +82,7 @@ const updatePermissions = async (req, res) => {
     const { id } = req.params;
     const p = req.body;
     const response = await pool.query(
-      "update permissions set id_user=$1, products=$2, products_create=$3, products_update=$4, products_delete=$5, category=$6, category_create=$7, category_update=$8, category_delete=$9, services=$10, services_create=$11, services_update=$12, services_delete=$13, client=$14, client_create=$15, client_update=$16, client_delete=$17, supplier=$18, supplier_create=$19, supplier_update=$20, supplier_delete=$21, employee=$22, employee_create=$23, employee_update=$24, employee_delete=$25, buy=$26, buy_return=$27, buy_pay=$28, sell=$29, sell_return=$30, sell_pay=$31, consult_product=$32, consult_invoice=$33, consult_movement=$34, consult_supplier=$35, consult_client=$36, setting=$37 where id=$38",
+      "update permissions set id_user=$1, products=$2, products_create=$3, products_update=$4, products_delete=$5, category=$6, category_create=$7, category_update=$8, category_delete=$9, services=$10, services_create=$11, services_update=$12, services_delete=$13, client=$14, client_create=$15, client_update=$16, client_delete=$17, supplier=$18, supplier_create=$19, supplier_update=$20, supplier_delete=$21, employee=$22, employee_create=$23, employee_update=$24, employee_delete=$25, buy=$26, buy_return=$27, buy_pay=$28, sell=$29, sell_return=$30, sell_pay=$31, consult_product=$32, consult_invoice=$33, consult_movement=$34, consult_supplier=$35, consult_client=$36, setting=$37 where id_user=$38",
       [
         p.id_user,
         p.products,
@@ -137,7 +137,7 @@ const updatePermissions = async (req, res) => {
 const deletePermissions = async (req, res) => {
   try {
     const { id } = req.params;
-    const response = await pool.query("delete from permissions where id=$1", [
+    const response = await pool.query("delete from permissions where id_user=$1", [
       id,
     ]);
     if (response.rowCount > 0) {

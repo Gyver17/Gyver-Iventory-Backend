@@ -36,7 +36,7 @@ const createUsers = async (req, res) => {
       [id, rol, name, mail, newPassword]
     );
     await pool.query("insert into sessions (id, id_user) values ($1, $2)", [idSession, id])
-    res.status(200).send({ message: "Successful" });
+    res.status(200).send({ id });
   } catch (error) {
     handleError(res, error)
   }
@@ -91,6 +91,7 @@ const updatePassword = async (req, res) => {
 const deleteUsers = async (req, res) => {
   try {
     const { id } = req.params;
+    await pool.query("delete from sessions where id_user=$1", [id]);
     const response = await pool.query("delete from users where id=$1", [id]);
     if (response.rowCount > 0) {
       res.status(200).send({ message: "Successful" });
