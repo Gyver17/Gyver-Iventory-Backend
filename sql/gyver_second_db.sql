@@ -126,7 +126,7 @@ CREATE TABLE "employee" (
   "id" varchar PRIMARY KEY,
   "code" varchar UNIQUE NOT NULL,
   "name" varchar NOT NULL,
-  "prefix_doc" varchar NOT NULL,
+  "doc_id" varchar UNIQUE NOT NULL,
   "mail" varchar NOT NULL,
   "phone" varchar NOT NULL,
   "salary" numeric NOT NULL,
@@ -193,6 +193,7 @@ CREATE TABLE "product_sell" (
 );
 
 CREATE TABLE "numbers_invoice" (
+  "id" varchar PRIMARY KEY,
   "buy" integer NOT NULL,
   "sell" integer NOT NULL
 );
@@ -239,7 +240,7 @@ ALTER TABLE "permissions" ADD FOREIGN KEY ("id_user") REFERENCES "users" ("id");
 
 ALTER TABLE "services_sell" ADD FOREIGN KEY ("id_services") REFERENCES "services" ("id");
 
-ALTER TABLE "invoice_sell" ADD FOREIGN KEY ("id") REFERENCES "services_sell" ("id_invoice");
+-- ALTER TABLE "invoice_sell" ADD FOREIGN KEY ("id") REFERENCES "services_sell" ("id_invoice");
 
 ALTER TABLE "services_sell" ADD FOREIGN KEY ("id_employee") REFERENCES "employee" ("id");
 
