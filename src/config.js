@@ -6,6 +6,8 @@ dotenv.config({
 });
 // console.log(process.env.PORT)
 
+const whiteList = [process.env.CORS_ORIGIN_1, process.env.CORS_ORIGIN_2]
+
 module.exports = {
   database: {
     user: process.env.DB_USER,
@@ -16,5 +18,15 @@ module.exports = {
     ssl: {
       rejectUnauthorized: false
     }
+  },
+  settingCors: {
+    origin: (origin, callback) =>{
+      if (whiteList.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    },
+    credentials: true,
   }
 };

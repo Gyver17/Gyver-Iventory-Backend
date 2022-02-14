@@ -2,13 +2,7 @@ const express = require("express");
 const morgan = require("morgan")
 const cors = require("cors")
 const app = express();
-
-//Consts
-const settingCors = {
-  origin: "http://localhost:4000",
-  // origin: "http://192.168.1.24:4000",
-  credentials: true
-}
+const {settingCors}=require("./config")
 
 //setting
 app.set('port', process.env.PORT || 3000);
