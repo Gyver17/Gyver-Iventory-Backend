@@ -21,6 +21,12 @@ const validateCreate = [
     check('value')
         .exists()
         .isFloat()
+        .custom((value) => {
+            if(value <= 0){
+                throw new Error('Invalid value')
+            }
+            return true
+        })
         .notEmpty()
     ,
     (req, res, next) => {

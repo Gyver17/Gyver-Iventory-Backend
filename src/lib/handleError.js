@@ -1,7 +1,6 @@
 const { handleConstraint } = require("./handleConstraint")
 
 const handleError = (res, err) => {
-    console.log(err)
     if (err.code) {
         if (err.code === "23505" || err.code === "23503") {
             handleConstraint(res, err)
