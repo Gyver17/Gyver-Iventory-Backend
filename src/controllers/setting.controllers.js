@@ -5,7 +5,7 @@ const { handleError } = require("../lib/handleError");
 const getSetting = async (req, res) => {
   try {
     const response = await pool.query("select * from setting");
-    res.status(200).json(response.rows);
+    res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
   }
@@ -96,5 +96,5 @@ const updateSetting = async (req, res) => {
 module.exports = {
   getSetting,
   createSetting,
-  updateSetting
+  updateSetting,
 };

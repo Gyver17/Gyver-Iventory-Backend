@@ -1,8 +1,9 @@
 const express = require("express");
 const morgan = require("morgan")
 const cors = require("cors")
+const path = require("path")
+const { settingCors }=require("./config")
 const app = express();
-const {settingCors}=require("./config")
 
 //setting
 app.set('port', process.env.PORT || 3000);
@@ -10,7 +11,7 @@ app.set('port', process.env.PORT || 3000);
 //midlewares
 app.use(morgan("dev"));
 app.use(cors(settingCors));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true, }));
 app.use(express.json());
 
 //Routes
