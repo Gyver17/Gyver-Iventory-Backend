@@ -4,7 +4,16 @@ const { handleError } = require("../lib/handleError");
 
 const getSetting = async (req, res) => {
   try {
-    const response = await pool.query("select * from setting");
+    const response = await pool.query(`
+        select *, 
+        setting.id as id_setting, 
+        m1.symbol as first_symbol, 
+        m1.value as first_value, 
+        m2.symbol as second_symbol,
+        m2.value as second_value from setting 
+        inner join money as m1 on setting.id_money_1 = m1.id 
+        inner join money as m2 on setting.id_money_2 = m2.id
+      `);
     res.status(200).json(response.rows[0]);
   } catch (error) {
     handleError(res, error)
