@@ -65,7 +65,7 @@ const validateCreate = [
         .notEmpty(),
     check('iva')
         .exists()
-        .isFloat()
+        .isFloat({ min: 0, max: 1 })
         .notEmpty()
     ,
     (req, res, next) => {
