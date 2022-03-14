@@ -9,7 +9,7 @@ const verifyToken = async (req, res, next) => {
     if (!token) {
       res.status(403).send({ code: "43292" });
     } else {
-
+      
       /* Decoding the token to get the payload */
       var base64Url = token.split('.')[1]
       var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')

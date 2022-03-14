@@ -15,7 +15,19 @@ const loginUsers = async (req, res) => {
             const user = response.rows[0];
             const validPassword = await bcrypt.matchPassword(password, user.password);
             if (validPassword) {
-                const { id, rol, name, mail } = user;
+                const { id } = user;
+
+                const secondQuery = await pool.query(
+                    "select * from permissions where id_user=$1",
+                    [id]
+                );
+                const permissions = secondQuery.rows[0]
+
+                const thirdQuery = await pool.query(
+                    "select * from setting"
+                );
+                const setting = thirdQuery.rows[0]
+
                 const secretKey = v4()
                 await pool.query("update sessions set secret_key=$1 where id_user=$2", [secretKey, id])
                 const payload = {
@@ -24,7 +36,9 @@ const loginUsers = async (req, res) => {
                 const token = jwt.sign(payload, secretKey, {
                     expiresIn: 60 * 60 * 24
                 });
-                const data = { id, rol, name, mail, token }
+                user["token"] = token
+
+                const data = { user, permissions, setting }
                 res.status(200).send(data)
             } else {
                 res.status(404).send({ code: "44754" })

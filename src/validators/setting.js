@@ -63,10 +63,6 @@ const validateCreate = [
             return true
         })
         .notEmpty(),
-    check('company_photo')
-        .exists()
-        .isString()
-        .notEmpty(),
     check('iva')
         .exists()
         .isFloat()
