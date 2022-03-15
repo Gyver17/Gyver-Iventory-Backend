@@ -10,8 +10,7 @@ CREATE TABLE "products" (
 
 CREATE TABLE "category" (
   "id" varchar PRIMARY KEY,
-  "name" varchar UNIQUE NOT NULL,
-  "unit" boolean NOT NULL
+  "name" varchar UNIQUE NOT NULL
 );
 
 CREATE TABLE "services" (
@@ -59,7 +58,6 @@ CREATE TABLE "setting" (
   "company_mail" varchar NOT NULL,
   "company_phone_first" varchar NOT NULL,
   "company_phone_second" varchar NOT NULL,
-  "company_photo" varchar NOT NULL,
   "iva" numeric NOT NULL
 );
 

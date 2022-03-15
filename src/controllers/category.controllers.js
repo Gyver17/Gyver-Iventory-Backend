@@ -4,9 +4,14 @@ const { handleError } = require("../lib/handleError");
 
 const getCategory = async (req, res) => {
   try {
-    const response = await pool.query(
+    /*const response = await pool.query(
       "select * from category order by name asc"
+    );*/
+    const response = await pool.query(
+      `select *, (select count(*) from products 
+      where id_category=category.id) as quantity from category order by name asc`
     );
+    
     res.status(200).json(response.rows);
   } catch (error) {
     handleError(res, error)
@@ -28,10 +33,10 @@ const getCategoryById = async (req, res) => {
 const createCategory = async (req, res) => {
   try {
     const id = v4();
-    const { name, unit } = req.body;
+    const { name } = req.body;
     await pool.query(
-      "insert into category (id, name, unit) values ($1, $2, $3)",
-      [id, name, unit]
+      "insert into category (id, name) values ($1, $2)",
+      [id, name]
     );
     res.status(200).send({ message: "Successful" });
   } catch (error) {
@@ -42,10 +47,10 @@ const createCategory = async (req, res) => {
 const updateCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, unit } = req.body;
+    const { name } = req.body;
     const response = await pool.query(
-      "update category set name=$1, unit=$2 where id=$3",
-      [name, unit, id]
+      "update category set name=$1 where id=$2",
+      [name, id]
     );
     if (response.rowCount > 0) {
       res.status(200).send({ message: "Successful" });

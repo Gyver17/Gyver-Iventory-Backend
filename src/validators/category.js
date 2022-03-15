@@ -13,11 +13,6 @@ const validateCreate = [
             return true
         })
         .notEmpty(),
-    check('unit')
-        .exists()
-        .isBoolean()
-        .notEmpty()
-    ,
     (req, res, next) => {
         validateResult(req, res, next)
     }
