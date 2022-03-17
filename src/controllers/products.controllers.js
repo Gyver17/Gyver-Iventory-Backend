@@ -5,7 +5,18 @@ const { handleError } = require("../lib/handleError");
 const getProducts = async (req, res) => {
   try {
     const response = await pool.query(
-      "select * from products order by name asc"
+      `select 
+      products.id as id,
+      products.code as code,
+      products.name as name,
+      products.id_category as id_category,
+      category.name as category,
+      products.quantity as quantity,
+      products.price_buy as price_buy,
+      products.price_sell as price_sell
+      from products 
+      inner join category on products.id_category=category.id 
+      order by products.name asc`
     );
     res.status(200).json(response.rows);
   } catch (error) {
