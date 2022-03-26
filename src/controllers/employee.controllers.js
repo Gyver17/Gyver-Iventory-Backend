@@ -66,6 +66,7 @@ const updateEmploye = async (req, res) => {
       name,
       doc_id,
       mail,
+      phone,
       salary,
       com_sell,
       com_service,
