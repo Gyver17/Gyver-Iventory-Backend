@@ -9,7 +9,7 @@ const getInvoiceBuy = async (req, res) => {
     );
     res.status(200).json(response.rows);
   } catch (error) {
-    handleError(res, error)
+    handleError(res, error);
   }
 };
 
@@ -21,7 +21,7 @@ const getInvoiceBuyById = async (req, res) => {
     ]);
     res.status(200).json(response.rows[0]);
   } catch (error) {
-    handleError(res, error)
+    handleError(res, error);
   }
 };
 
@@ -32,22 +32,45 @@ const createInvoiceBuy = async (req, res) => {
       number,
       id_supplier,
       id_employee,
+      products,
       price_sub,
       price_porcent,
       price_iva,
       price_total,
       date,
-      description,
-      pay_type,
-      pay_debit,
-      pay_cash,
       credit,
       amount_pay,
       amount_remaining,
       observation,
     } = req.body;
+
+    const description = "Compra";
+
+    let credit_value = "";
+    if (credit) {
+      credit_value = "Si";
+    } else {
+      credit_value = "No";
+    }
+    await pool.query("update numbers_invoice set buy=$1 where id=1", [number + 1]);
+
     await pool.query(
-      "insert into invoice_buy (id, number, id_supplier, id_employee, price_sub, price_porcent, price_iva, price_total, date, description, pay_type, pay_debit, pay_cash, credit, amount_pay, amount_remaining, observation) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)",
+      `insert into invoice_buy 
+      (id, 
+      number, 
+      id_supplier, 
+      id_employee, 
+      price_sub, 
+      price_porcent, 
+      price_iva, 
+      price_total, 
+      date, 
+      description, 
+      credit, 
+      amount_pay, 
+      amount_remaining, 
+      observation) 
+      values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`,
       [
         id,
         number,
@@ -59,18 +82,30 @@ const createInvoiceBuy = async (req, res) => {
         price_total,
         date,
         description,
-        pay_type,
-        pay_debit,
-        pay_cash,
-        credit,
+        credit_value,
         amount_pay,
         amount_remaining,
         observation,
       ]
     );
+
+    products.map(async (product) => {
+      const id_product_buy = v4();
+      const { id_product, quantity, price_total } = product;
+      const description_product = "Compra";
+      await pool.query(
+        "insert into product_buy (id, id_product, quantity, price_total, id_invoice, description) values ($1, $2, $3, $4, $5, $6)",
+        [id_product_buy, id_product, quantity, price_total, id, description]
+      );
+      const response = await pool.query(
+        `update products set quantity = quantity+$1 where id=$2`,
+        [quantity, id_product]
+      );
+    });
+
     res.status(200).send({ message: "Successful" });
   } catch (error) {
-    handleError(res, error)
+    handleError(res, error);
   }
 };
 
@@ -88,7 +123,7 @@ const updateInvoiceBuy = async (req, res) => {
       res.status(404).send({ code: "44947" });
     }
   } catch (error) {
-    handleError(res, error)
+    handleError(res, error);
   }
 };
 

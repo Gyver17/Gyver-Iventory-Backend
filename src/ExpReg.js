@@ -2,7 +2,7 @@ const expresions = {
     userName: /^[a-zA-Z0-9_-]{4,16}$/,
     name: /^[a-zA-ZÀ-ÿ\s.]{1,40}$/,
     productName: /^[a-zA-ZÀ-ÿ0-9\s.]{1,60}$/,
-    observation: /^[a-zA-ZÀ-ÿ0-9\s.,]{1,100}$/,
+    observation: /^[a-zA-ZÀ-ÿ0-9\s.,]{0,100}$/,
     code: /^[a-zA-Z0-9-.]{1,8}$/, 
     password: /^[a-zA-Z0-9_-]{4,12}$/,
     docId: /^([VJE]{1})-(\d{6,12})$/,

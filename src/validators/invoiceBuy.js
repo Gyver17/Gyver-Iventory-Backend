@@ -5,13 +5,7 @@ const { expresions } = require('../ExpReg')
 const validateCreate = [
     check('number')
         .exists()
-        .isString()
-        .custom((value) => {
-            if (!expresions.code.test(value)) {
-                throw new Error('Invalid value')
-            }
-            return true
-        })
+        .isInt()
         .notEmpty(),
     check('id_supplier')
         .exists()
@@ -21,9 +15,33 @@ const validateCreate = [
         .exists()
         .isString()
         .notEmpty(),
+    check("products").exists().isArray().notEmpty(),
+    check('products.*.id_product')
+        .exists()
+        .isString()
+        .notEmpty(),
+    check('products.*.quantity')
+        .exists()
+        .isFloat()
+        .notEmpty(),
+    check('products.*.price_total')
+        .exists()
+        .isFloat()
+        .notEmpty(),
     check('price_sub')
         .exists()
         .isFloat()
+        .custom((value, { req }) => {
+            const { products } = req.body
+            const sub_total = products.reduce(
+                (prev, next) => prev + (next["price_total"] || 0),
+                0
+            );
+            if (value === sub_total && value > 0) {
+                return true
+            }
+            throw new Error('Invalid value')
+        })
         .notEmpty(),
     check('price_porcent')
         .exists()
@@ -54,78 +72,17 @@ const validateCreate = [
             return true
         })
         .notEmpty(),
-    check('description')
-        .exists()
-        .isString()
-        .custom((value) => {
-            if (value === 'Compra' || value === 'Devolución') {
-                return true
-            }
-            throw new Error('Invalid value')
-        })
-        .notEmpty(),
-    check('pay_type')
-        .exists()
-        .isString()
-        .custom((value) => {
-            if (value === 'Débito' || value === 'Efectivo' || value === 'Ambos') {
-                return true
-            }
-            throw new Error('Invalid value')
-        })
-        .notEmpty(),
-    check('pay_debit')
-        .exists()
-        .isFloat()
-        .custom((value, { req }) => {
-            const { price_total, pay_cash, credit, amount_pay } = req.body
-            if (credit === 'No') {
-                if (value === price_total - pay_cash) {
-                    return true
-                }
-            } else {
-                if (value === amount_pay - pay_cash){
-                    return true
-                }
-            }
-            throw new Error('Invalid value')
-        })
-        .notEmpty(),
-    check('pay_cash')
-        .exists()
-        .isFloat()
-        .custom((value, { req }) => {
-            const { price_total, pay_debit, credit, amount_pay } = req.body
-            if(credit==='No'){
-                if (value === price_total - pay_debit) {
-                    return true
-                }
-            }
-            else{
-                if (value === amount_pay - pay_debit) {
-                    return true
-                }
-            }
-            throw new Error('Invalid value')
-        })
-        .notEmpty(),
     check('credit')
         .exists()
-        .isString()
-        .custom((value) => {
-            if (value === 'Si' || value === 'No') {
-                return true
-            }
-            throw new Error('Invalid value')
-        })
+        .isBoolean()
         .notEmpty(),
     check('amount_pay')
         .exists()
         .isFloat()
         .custom((value, { req }) => {
-            const { credit, amount_remaining, pay_debit, pay_cash, price_total } = req.body
-            if (credit === 'Si') {
-                if (value === pay_debit + pay_cash && value === price_total - amount_remaining) {
+            const { credit, amount_remaining, price_total } = req.body
+            if (credit) {
+                if (value === price_total - amount_remaining) {
                     return true
                 }
             } else {
@@ -141,7 +98,7 @@ const validateCreate = [
         .isFloat()
         .custom((value, { req }) => {
             const { credit, amount_pay, price_total } = req.body
-            if (credit === 'Si') {
+            if (credit) {
                 if (value === price_total - amount_pay) {
                     return true
                 }
