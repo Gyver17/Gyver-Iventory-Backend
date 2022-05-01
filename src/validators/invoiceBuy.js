@@ -125,4 +125,79 @@ const validateCreate = [
     }
 ]
 
-module.exports = { validateCreate }
+const validateCreateReturn = [
+    check('number')
+        .exists()
+        .isInt()
+        .notEmpty(),
+    check('id_supplier')
+        .exists()
+        .isString()
+        .notEmpty(),
+    check('id_employee')
+        .exists()
+        .isString()
+        .notEmpty(),
+    check("products").exists().isArray().notEmpty(),
+    check('products.*.id_product')
+        .exists()
+        .isString()
+        .notEmpty(),
+    check('products.*.id_invoice')
+        .exists()
+        .isString()
+        .notEmpty(),
+    check('products.*.quantity')
+        .exists()
+        .isFloat()
+        .notEmpty(),
+    check('products.*.price_total')
+        .exists()
+        .isFloat()
+        .notEmpty(),
+    check('price_sub')
+        .exists()
+        .isFloat()
+        .custom((value, { req }) => {
+            const { products } = req.body
+            const sub_total = products.reduce(
+                (prev, next) => prev + (next["price_total"] || 0),
+                0
+            );
+            if (value === sub_total && value > 0) {
+                return true
+            }
+            throw new Error('Invalid value')
+        })
+        .notEmpty(),
+    check('price_iva')
+        .exists()
+        .isFloat()
+        .notEmpty(),
+    check('price_total')
+        .exists()
+        .isFloat()
+        .custom((value, { req }) => {
+            const { price_sub, price_iva } = req.body
+            if (value === price_sub + price_iva) {
+                return true
+            }
+            throw new Error('Invalid value')
+        })
+        .notEmpty(),
+    check('date')
+        .exists()
+        .isString()
+        .custom((value) => {
+            if (!expresions.date.test(value)) {
+                throw new Error('Invalid value')
+            }
+            return true
+        })
+        .notEmpty(),
+    (req, res, next) => {
+        validateResult(req, res, next)
+    }
+]
+
+module.exports = { validateCreate, validateCreateReturn }

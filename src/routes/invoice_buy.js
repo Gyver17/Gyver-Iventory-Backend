@@ -3,15 +3,55 @@ const router = express.Router();
 
 const invoice_buy = require("../controllers/invoice_buy.controllers");
 const { verifyToken } = require("../lib/verifyToken");
-const permissions = require('../permissions/buy');
-const { validateCreate } = require("../validators/invoiceBuy");
+const permissions = require("../permissions/buy");
+const {
+	validateCreate,
+	validateCreateReturn,
+} = require("../validators/invoiceBuy");
 
-router.get("/", verifyToken, permissions.invoice, invoice_buy.getInvoiceBuy);
+router.get(
+	"/date/:date",
+	verifyToken,
+	permissions.invoice,
+	invoice_buy.getInvoiceBuy
+);
 
-router.get("/:id", verifyToken, permissions.invoice, invoice_buy.getInvoiceBuyById);
+router.get(
+	"/pay/:date",
+	verifyToken,
+	permissions.invoice,
+	invoice_buy.getPayInvoiceBuy
+);
 
-router.post("/", verifyToken, permissions.create, validateCreate, invoice_buy.createInvoiceBuy);
+router.get(
+	"/byId/:id",
+	verifyToken,
+	permissions.invoice,
+	invoice_buy.getInvoiceBuyById
+);
 
-router.put("/:id", verifyToken, permissions.update, validateCreate, invoice_buy.updateInvoiceBuy);
+router.post(
+	"/buy",
+	verifyToken,
+	permissions.create,
+	validateCreate,
+	invoice_buy.createInvoiceBuy
+);
+
+router.post(
+	"/return",
+	verifyToken,
+	permissions.create,
+	validateCreateReturn,
+	invoice_buy.createInvoiceBuyReturn
+);
+
+router.put(
+	"/:id",
+	verifyToken,
+	permissions.update,
+	validateCreate,
+	invoice_buy.updateInvoiceBuy
+);
 
 module.exports = router;
