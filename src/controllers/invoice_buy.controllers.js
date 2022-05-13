@@ -211,7 +211,14 @@ const createInvoiceBuyReturn = async (req, res) => {
       const { id_product, id_invoice, quantity, price_total } = product;
       await pool.query(
         "insert into product_buy (id, id_product, quantity, price_total, id_invoice, description) values ($1, $2, $3, $4, $5, $6)",
-        [id_product_buy, id_product, -quantity, -price_total, id_invoice, description]
+        [
+          id_product_buy,
+          id_product,
+          -quantity,
+          -price_total,
+          id_invoice,
+          description,
+        ]
       );
       const response = await pool.query(
         `update products set quantity = quantity-$1 where id=$2`,
@@ -225,14 +232,29 @@ const createInvoiceBuyReturn = async (req, res) => {
   }
 };
 
-const updateInvoiceBuy = async (req, res) => {
+const updateInvoiceBuyPay = async (req, res) => {
   try {
     const { id } = req.params;
-    const { description, credit, amount_pay, amount_remaining } = req.body;
+    const { amount_pay, amount_paid, amount_remaining, date } =
+      req.body;
+    const id_pay = v4();
+
+    let credit = "Si"
+
+    if(amount_remaining === 0) {
+      credit = "Pagada"
+    }
+
     const response = await pool.query(
-      "update invoice_buy set description=$1, credit=$2, amount_pay=$3, amount_remaining=$4 where id=$5",
-      [description, credit, amount_pay, amount_remaining, id]
+      "update invoice_buy set credit=$1, amount_pay=$2, amount_remaining=$3 where id=$4",
+      [ credit, amount_pay + amount_paid, amount_remaining, id]
     );
+
+    await pool.query(
+      "insert into pay_purchases_history (id, id_invoice, date, amount, remaining) values ($1, $2, $3, $4, $5)",
+      [id_pay, id, date, amount_pay, amount_remaining]
+    );
+
     if (response.rowCount > 0) {
       res.status(200).send({ message: "Successful" });
     } else {
@@ -249,5 +271,5 @@ module.exports = {
   getInvoiceBuyById,
   createInvoiceBuy,
   createInvoiceBuyReturn,
-  updateInvoiceBuy,
+  updateInvoiceBuyPay,
 };
